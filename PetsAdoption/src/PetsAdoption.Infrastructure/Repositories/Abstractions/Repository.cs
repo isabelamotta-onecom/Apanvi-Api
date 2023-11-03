@@ -16,15 +16,26 @@ public abstract class Repository<T> : IRepository<T> where T : ModelBase
     private readonly ConcurrentDictionary<Guid, T> _db = new ConcurrentDictionary<Guid, T>();
     private readonly IOptions<FeatureFlags> _featureFlagsOption;
     private readonly PetsAdoptionDBContext _petsAdoptionDBContext;
-    private readonly DbSet<T> _dbSet;
+    protected readonly DbSet<T> DbSet;
 
     public Repository(PetsAdoptionDBContext dbContext, IOptions<FeatureFlags> featureFlagsOption)
     {
         _featureFlagsOption = featureFlagsOption;
         _petsAdoptionDBContext = dbContext;
-        _dbSet = dbContext.Set<T>();
+        DbSet = dbContext.Set<T>();
     }
 
+    public virtual async Task<List<T>> GetAll()
+    {
+        return await _petsAdoptionDBContext.Set<T>().ToListAsync();
+    }
+
+    public async Task<T> Update(T model)
+    {
+        DbSet.Update(model);
+        await _petsAdoptionDBContext.SaveChangesAsync();
+        return model;
+    }
     public async Task Add(T model)
     {
         if (_featureFlagsOption.Value.UseSQLServer == false)
@@ -32,18 +43,24 @@ public abstract class Repository<T> : IRepository<T> where T : ModelBase
             await AddToDictionary(model);
         }
 
-        await _dbSet.AddAsync(model);
+        await DbSet.AddAsync(model);
         await _petsAdoptionDBContext.SaveChangesAsync();
     }
 
-    public async Task<T?> GetById(Guid id)
+    public virtual async Task<T?> GetById(Guid id)
     {
         if (_featureFlagsOption.Value.UseSQLServer == false)
         {
             return await GetFromDictionary(id);
         }
 
-        return await _dbSet.FindAsync(id);
+        return await DbSet.FindAsync(id);
+    }
+
+    public async Task Delete(T model)
+    {
+        DbSet.Remove(model);
+        await _petsAdoptionDBContext.SaveChangesAsync();
     }
 
     private async Task AddToDictionary(T model)

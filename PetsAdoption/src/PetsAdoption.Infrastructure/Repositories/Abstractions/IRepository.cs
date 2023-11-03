@@ -11,4 +11,7 @@ public interface IRepository<T> where T : ModelBase
 {
     Task<T?> GetById(Guid id);
     Task Add(T model);
+    Task<T> Update(T model);
+    Task<List<T>> GetAll();
+    Task Delete(T model);
 }

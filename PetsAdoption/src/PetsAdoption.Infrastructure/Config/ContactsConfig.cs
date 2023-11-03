@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage;
 using PetsAdoption.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -9,14 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PetsAdoption.Infrastructure.Config;
-public class PetsConfig : IEntityTypeConfiguration<Pet>
+public class ContactsConfig : IEntityTypeConfiguration<Contact>
 {
-    public void Configure(EntityTypeBuilder<Pet> builder)
+    public void Configure(EntityTypeBuilder<Contact> builder)
     {
-        builder.HasKey(p => p.Id);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(p => p.Name)
+        builder.Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(40);
+            .HasMaxLength(100);
+
+        builder.Property(x => x.PhoneNumber)
+            .IsRequired()
+            .HasMaxLength(10);
     }
 }
