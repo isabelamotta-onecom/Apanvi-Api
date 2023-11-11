@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PetsAdoption.Infrastructure.Repositories.Abstractions;
-public interface IUsersRepository : IRepository<User>
+public interface IPicturesRepository : IRepository<Picture>
 {
-   Task<User?> GetByUserName(string userName);
+    Task<Picture?> Get(Guid petId, Guid pictureId);
 }

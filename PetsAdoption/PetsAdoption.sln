@@ -11,13 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsAdoption.Api", "src\Pet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsAdoptions.Api.Tests", "test\PetsAdoptions.Api.Tests\PetsAdoptions.Api.Tests.csproj", "{9305340B-E5FA-42CC-838C-805679CE5707}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetsAdoption.Domain", "src\PetsAdoption.Domain\PetsAdoption.Domain.csproj", "{C52F6605-3FB7-49AA-8707-E70CCA971941}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsAdoption.Domain", "src\PetsAdoption.Domain\PetsAdoption.Domain.csproj", "{C52F6605-3FB7-49AA-8707-E70CCA971941}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetsAdoption.Infrastructure", "src\PetsAdoption.Infrastructure\PetsAdoption.Infrastructure.csproj", "{211AE3DC-304A-4305-BE72-3B0CC796A49B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsAdoption.Infrastructure", "src\PetsAdoption.Infrastructure\PetsAdoption.Infrastructure.csproj", "{211AE3DC-304A-4305-BE72-3B0CC796A49B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetsAdoption.Domain.Tests", "test\PetsAdoption.Domain.Tests\PetsAdoption.Domain.Tests.csproj", "{DAD50796-7CB1-4652-B8DC-CCE94C4EC1CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsAdoption.Domain.Tests", "test\PetsAdoption.Domain.Tests\PetsAdoption.Domain.Tests.csproj", "{DAD50796-7CB1-4652-B8DC-CCE94C4EC1CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetsAdoption.Infrastructure.Tests", "test\PetsAdoption.Infrastructure.Tests\PetsAdoption.Infrastructure.Tests.csproj", "{0F89BF30-4AFB-4E8F-88CC-0564BF4DDD82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetsAdoption.Infrastructure.Tests", "test\PetsAdoption.Infrastructure.Tests\PetsAdoption.Infrastructure.Tests.csproj", "{0F89BF30-4AFB-4E8F-88CC-0564BF4DDD82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

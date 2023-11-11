@@ -14,18 +14,20 @@ public class PetsController : ControllerBase
     private readonly IPetsRepository _petsRepository;
     private readonly IMapper _mapper;
     private readonly IContactsRepository _contactsRepository;
+    private readonly IPicturesRepository _picturesRepository;
 
-    public PetsController(IPetsRepository petsRepository, IMapper mapper, IContactsRepository contactsRepository)
+    public PetsController(IPetsRepository petsRepository, IMapper mapper, IContactsRepository contactsRepository, IPicturesRepository picturesRepository)
     {
         _petsRepository = petsRepository;
         _mapper = mapper;
         _contactsRepository = contactsRepository;
+        _picturesRepository = picturesRepository;
     }
 
     [HttpPost]
     public async Task<ActionResult<PetResponse>> Add(AddPetRequest petRequest)
     {
-        var pet = new Pet
+        var pet = new Pet()
         {
             Id = Guid.NewGuid(),
             Name = petRequest.Name,
@@ -61,13 +63,13 @@ public class PetsController : ControllerBase
         {
             return NotFound("Pet not found");
         }
-        
+
         var contact = await _contactsRepository.GetById(request.ContactId);
         if (contact is null)
         {
             return NotFound("Contact not found");
         }
-        
+
         pet.Contact = contact;
 
         await _petsRepository.Update(pet);
@@ -97,6 +99,58 @@ public class PetsController : ControllerBase
         }
 
         await _petsRepository.Delete(pet);
+
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}/pictures")]
+    public async Task<ActionResult> AddPicture(Guid id, IFormFile file)
+    {
+        var pet = await _petsRepository.GetById(id);
+        if (pet is null)
+        {
+            return NotFound();
+        }
+
+        var picture = new Picture()
+        {
+            Pet = pet,
+            FileName = Path.GetFileName(file.FileName)
+        };
+      
+        using var stream = new MemoryStream();
+        file.CopyTo(stream);
+        picture.File = stream.ToArray();
+
+        await _picturesRepository.Add(picture);
+
+        return NoContent(); // todo return created
+    }
+
+    [HttpGet("{petId:guid}/pictures/{pictureId:guid}")]
+    public async Task<ActionResult> GetPicture(Guid petId, Guid pictureId)
+    {
+        var picture = await _picturesRepository.Get(petId, pictureId);
+        if (picture is null)
+        {
+            return NotFound();
+        }
+
+        return File(picture.File, "application/octet-stream", picture.FileName);
+    }
+
+    [HttpPatch("{petId:guid}/pictures/{pictureId:guid}")]
+    public async Task<ActionResult> Patch(Guid petId, Guid pictureId, PatchPictureRequests request)
+    {
+        var picture = await _picturesRepository.Get(petId, pictureId);
+        if (picture is null)
+        {
+            return NotFound();
+        }
+
+        picture.IsCover = request.IsCover;
+
+        await _picturesRepository.Update(picture);
 
         return NoContent();
     }

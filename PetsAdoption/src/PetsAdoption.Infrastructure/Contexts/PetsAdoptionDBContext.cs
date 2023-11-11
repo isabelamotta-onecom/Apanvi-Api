@@ -17,6 +17,7 @@ public class PetsAdoptionDBContext : DbContext
     public DbSet<Pet>? Pets { get; set; }
     public DbSet<User>? Users { get; set; }
     public DbSet<Contact>? Contacts { get; set; }
+    public DbSet<Picture>? Pictures { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PetsAdoptionDBContext).Assembly);

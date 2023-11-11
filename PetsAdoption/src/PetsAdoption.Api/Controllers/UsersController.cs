@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetsAdoption.Api.Contracts.Requests;
 using PetsAdoption.Api.Contracts.Responses;
+using PetsAdoption.Api.Services.Abstractions;
 using PetsAdoption.Domain.Models;
 using PetsAdoption.Infrastructure.Repositories.Abstractions;
 
@@ -13,21 +14,42 @@ public class UsersController : ControllerBase
 {
     private readonly IUsersRepository _usersRepository;
     private readonly IMapper _mapper;
+    private readonly IEncryptionService _encryptionService;
 
-    public UsersController(IUsersRepository usersRepository, IMapper mapper)
+    public UsersController(IUsersRepository usersRepository, IMapper mapper, IEncryptionService encryptionService)
     {
         _usersRepository = usersRepository;
         _mapper = mapper;
+        _encryptionService = encryptionService;
     }
 
     [HttpPost]
     public async Task<ActionResult<UserResponse>> Add(AddUserRequest userRequest)
     {
+        // TODO: Remove Name from all
+        // Check if user name exists
+        // check password is not empty
+
+        var users = await _usersRepository.GetAll();
+        foreach (User u in users) 
+        {
+            if (u.UserName == userRequest.UserName)
+            {
+                return Unauthorized("Username already exists");
+            }
+        }
+
+        if (userRequest.Password == null)
+        {
+            return Unauthorized("Password can not be empty");
+        }
+
         var user = new User
         {
             Id = Guid.NewGuid(),
-            Name = userRequest.Name,
             Role = userRequest.Role,
+            UserName = userRequest.UserName,
+            Password = _encryptionService.Encrypt(userRequest.Password)
         };
 
         await _usersRepository.Add(user);

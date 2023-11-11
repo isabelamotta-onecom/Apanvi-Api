@@ -11,15 +11,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PetsAdoption.Infrastructure.Repositories;
-public class UsersRepository : Repository<User>, IUsersRepository
+public class PicturesRepository : Repository<Picture>, IPicturesRepository
 {
-    public UsersRepository(PetsAdoptionDBContext dbContext, IOptions<FeatureFlags> featureFlagsOption) 
-        : base(dbContext, featureFlagsOption)
+    public PicturesRepository(PetsAdoptionDBContext dbContext, IOptions<FeatureFlags> featureFlagsOption) : base(dbContext, featureFlagsOption)
     {
     }
 
-    public async Task<User?> GetByUserName(string userName)
+    public async Task<Picture?> Get(Guid petId, Guid pictureId)
     {
-        return await DbSet.SingleOrDefaultAsync(u => u.UserName == userName);
+        return await DbSet.SingleOrDefaultAsync(picture => picture.Id == pictureId && picture.Pet.Id == petId);
     }
+
 }

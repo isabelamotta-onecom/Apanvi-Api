@@ -11,5 +11,6 @@ public class PetsAdoptionProfile : Profile
         CreateMap<Pet, PetResponse>();
         CreateMap<User, UserResponse>();
         CreateMap<Contact, ContactResponse>();
+        CreateMap<Picture, PictureResponse>();
     }
 }

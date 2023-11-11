@@ -20,12 +20,18 @@ public class PetsRepository : Repository<Pet>, IPetsRepository
 
     public override async Task<Pet?> GetById(Guid id)
     {
-        return await DbSet.Include(pet => pet.Contact).SingleOrDefaultAsync(pet => pet.Id == id);
+        return await DbSet
+            .Include(pet => pet.Contact)
+            .Include(pet => pet.Pictures)
+            .SingleOrDefaultAsync(pet => pet.Id == id);
     }
 
     public override async Task<List<Pet>> GetAll()
     {
-        return await DbSet.Include(pet => pet.Contact).ToListAsync();
+        return await DbSet
+            .Include(pet => pet.Contact)
+            .Include(pet => pet.Pictures)
+            .ToListAsync();
     }
 
     public async Task<List<Pet>> GetByContact(Guid contactId)

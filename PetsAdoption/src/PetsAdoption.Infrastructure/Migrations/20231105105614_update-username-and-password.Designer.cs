@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetsAdoption.Infrastructure.Contexts;
 
@@ -11,9 +12,10 @@ using PetsAdoption.Infrastructure.Contexts;
 namespace PetsAdoption.Infrastructure.Migrations
 {
     [DbContext(typeof(PetsAdoptionDBContext))]
-    partial class PetsAdoptionDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231105105614_update-username-and-password")]
+    partial class updateusernameandpassword
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,6 +102,11 @@ namespace PetsAdoption.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Password")
                         .IsRequired()

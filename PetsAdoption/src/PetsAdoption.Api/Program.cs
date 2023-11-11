@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using PetsAdoption.Api.Mapping;
+using PetsAdoption.Api.Services;
+using PetsAdoption.Api.Services.Abstractions;
+using PetsAdoption.Api.Settings;
 using PetsAdoption.Infrastructure.Contexts;
 using PetsAdoption.Infrastructure.Repositories;
 using PetsAdoption.Infrastructure.Repositories.Abstractions;
@@ -15,6 +18,9 @@ builder.Services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOption
 builder.Services.AddScoped<IPetsRepository, PetsRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
+builder.Services.AddScoped<IPicturesRepository, PicturesRepository>();
+builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddAutoMapper(typeof(PetsAdoptionProfile).Assembly);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -28,6 +34,8 @@ builder.Services.AddDbContext<PetsAdoptionDBContext>(options =>
             optSqLite.MigrationsAssembly(typeof(PetsAdoptionDBContext).Assembly.GetName().Name)).EnableSensitiveDataLogging());
 
 builder.Services.Configure<FeatureFlags>(builder.Configuration.GetSection(key: nameof(FeatureFlags)));
+builder.Services.Configure<EncryptionSettings>(builder.Configuration.GetSection(key: nameof(EncryptionSettings)));
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection(key: nameof(TokenSettings)));
 
 var app = builder.Build();
 

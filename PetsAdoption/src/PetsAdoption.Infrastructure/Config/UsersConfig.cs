@@ -15,15 +15,17 @@ public class UsersConfig : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
 
-        builder.Property(u => u.Name)
-            .IsRequired()
-            .HasMaxLength(100);
-
         builder.Property(u => u.Role)
             .IsRequired()
             .HasConversion(
                 v => v.ToString(),
                 v => (Roles)Enum.Parse(typeof(Roles), v))
             .HasMaxLength(40);
+
+        builder.Property(u => u.UserName)
+            .HasMaxLength(50);
+
+        builder.Property(u => u.Password)
+            .HasMaxLength(500);
     }
 }

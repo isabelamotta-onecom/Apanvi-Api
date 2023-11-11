@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PetsAdoption.Domain.Models;
-internal class Picture
+public class Picture : ModelBase
 {
+    public Pet Pet { get; set; } = new Pet();
+    public byte[] File { get; set; } = Array.Empty<byte>();
+    public string FileName { get; set; } = string.Empty;
+    public bool IsCover { get; set; }
 }
